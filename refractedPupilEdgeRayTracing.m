@@ -1,4 +1,4 @@
-function [intersectionPointsOnInnerCorneaSphere, intersectionPointsOnOuterCorneaSphere, directIntersectionPointsOuterCorneaSphere] = refractedPupilEdgeRayTracing(cameraOpticalCenterPoint,pupilEdgePoints,innerCorneaSphereRadius,innerCorneaSphereCenter,outerCorneaSphereRadius,outerCorneaSphereCenter,eyeHumorRefractionIndex, corneaRefractionIndex, airRefractionIndex)
+function [intersectionPointsOnInnerCorneaSphere, intersectionPointsOnOuterCorneaSphere, directIntersectionPointsOuterCorneaSphere,refractedErrorOfAllPoint] = refractedPupilEdgeRayTracing(cameraOpticalCenterPoint,pupilEdgePoints,innerCorneaSphereRadius,innerCorneaSphereCenter,outerCorneaSphereRadius,outerCorneaSphereCenter,eyeHumorRefractionIndex, corneaRefractionIndex, airRefractionIndex)
 % pupilEdgePoints在角膜内部的anterior chamber aqueous humor内部
 % 求解所有pupilEdgePoints经过内、外角膜界面两次折射后，能够经过cameraOpticalCenterPoint的射线方向。
 % 这些射线与角膜外侧的交点，为摄像头成像的ray tracing的光线追踪，用来分析虚像和通过真实位姿的几何关系。
@@ -10,6 +10,8 @@ intersectionPointsOnInnerCorneaSphere = zeros(size(pupilEdgePoints));
 intersectionPointsOnOuterCorneaSphere = zeros(size(pupilEdgePoints));
 directIntersectionPointsOuterCorneaSphere = zeros(size(pupilEdgePoints));
 errorCompensateRatio = 0.5;
+
+refractedErrorOfAllPoint = zeros([1,size(pupilEdgePoints,2)]);
 
 for i = 1:size(pupilEdgePoints,2)
     % 先求cameraOpticalCenterPoint和某一个pupilEdgePoints的连线，如角膜内球面的交点
@@ -59,6 +61,7 @@ for i = 1:size(pupilEdgePoints,2)
             
             attemptIndex=attemptIndex+1;
         else
+            refractedErrorOfAllPoint(1,i)=refractedError;
             break;
         end
     end
