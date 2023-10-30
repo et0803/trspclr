@@ -7,7 +7,7 @@ function [eyeCenter,pupilRadius, pupilCenter, transformedPupilPoints, transforme
 
 scale = scale/1000; %外部以m为单位，这个函数是以mm为单位。
 
-% hold on;
+hold on;
 %将眼球旋转中心设置在原点。默认模型的光轴为z轴。
 eyeBallRotationCenter=[0;0;0];  
 eyeBallRadius = 10.9*scale;   %24.4-13.5 https://application.wiley-vch.de/books/sample/3527403809_c01.pdf page5
@@ -44,7 +44,7 @@ for i=1:2
             tempZ(j,k) = transformedVector(3);
         end
     end
-    % surf(tempX, tempY, tempZ, 'Facecolor', color (i), 'Linestyle', 'none', 'FaceAlpha', alpha (i));
+    surf(tempX, tempY, tempZ, 'Facecolor', color (i), 'Linestyle', 'none', 'FaceAlpha', alpha (i));
     tempCenter = transformationMatrix(1:3,1:3)*corneaSphereCenter(:,i) + transformationMatrix(1:3,4);
     transformedCorneaCenter(:,i)=tempCenter;
     plot3(tempCenter(1),tempCenter(2),tempCenter(3),'.','Color', color (i));
@@ -65,9 +65,9 @@ for j=1:size(tempX,1)
     end
 end
 %surf(h_ax,tempX, tempY, tempZ, 'Facecolor', [0 0.4470 0.7410], 'Linestyle', 'none', 'FaceAlpha', alpha (1));
-% surf(h_ax,tempX, tempY, tempZ, 'Facecolor', [0.5 0.5 0.5], 'Linestyle', 'none', 'FaceAlpha', alpha (1));
+surf(h_ax,tempX, tempY, tempZ, 'Facecolor', [0.5 0.5 0.5], 'Linestyle', 'none', 'FaceAlpha', alpha (1));
 eyeCenter(:,1) = transformationMatrix(1:3,1:3)*eyeBallRotationCenter + transformationMatrix(1:3,4);
-% plot3(h_ax,eyeCenter(1,1),eyeCenter(2,1),eyeCenter(3,1),'.','Color', 'k')
+plot3(h_ax,eyeCenter(1,1),eyeCenter(2,1),eyeCenter(3,1),'.','Color', 'k')
 
 
 % 虹膜内外圆盘
@@ -79,10 +79,10 @@ irisPoints = [x*irisRadius;y*irisRadius;pupilCenter(3)*ones(size(t))];
 transformedPupilPoints = transformationMatrix(1:3,1:3)*pupilPoints + transformationMatrix(1:3,4)* ones(1,size(pupilPoints,2));
 transformedIrisPoints = transformationMatrix(1:3,1:3)*irisPoints + transformationMatrix(1:3,4)* ones(1,size(irisPoints,2));
 
-% plot3(h_ax,transformedPupilPoints(1,:),transformedPupilPoints(2,:),transformedPupilPoints(3,:),'k-','LineWidth',1)
+plot3(h_ax,transformedPupilPoints(1,:),transformedPupilPoints(2,:),transformedPupilPoints(3,:),'k-','LineWidth',1)
 %plot3(h_ax,transformedIrisPoints(1,:),transformedIrisPoints(2,:),transformedIrisPoints(3,:),'k-','LineWidth',0.5)
 pupilCenter = transformationMatrix(1:3,1:3)*pupilCenter + transformationMatrix(1:3,4);
-% plot3(h_ax,pupilCenter(1),pupilCenter(2),pupilCenter(3),'k.')
-% hold off;
+plot3(h_ax,pupilCenter(1),pupilCenter(2),pupilCenter(3),'k.')
+hold off;
 end
 
